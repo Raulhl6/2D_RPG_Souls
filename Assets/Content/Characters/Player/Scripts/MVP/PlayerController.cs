@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerData data;
     public IPlayerModel playerModel { get; private set; }

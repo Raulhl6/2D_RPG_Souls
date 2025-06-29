@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMoveState : PlayerBaseState
 {
-    public PlayerMoveState(PlayerManager player) : base(player)
+    public PlayerMoveState(PlayerController player) : base(player)
     {
     }
 

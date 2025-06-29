@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class PlayerBaseState : IState
 {
-    protected readonly PlayerManager player;
+    protected readonly PlayerController player;
 
 
-    protected PlayerBaseState(PlayerManager player) 
+    protected PlayerBaseState(PlayerController player) 
     {
         this.player = player;
     }
