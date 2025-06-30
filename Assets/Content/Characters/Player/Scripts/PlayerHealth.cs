@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerHealth : CharacterHealth
+public class PlayerHealth : CharacterHealthBase
 {
     public static PlayerHealth CreatePlayerHealth(MonoBehaviour context, PlayerData playerData)
     {

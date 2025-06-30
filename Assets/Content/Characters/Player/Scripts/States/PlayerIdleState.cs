@@ -8,7 +8,7 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void OnEnter()
     {
-        Debug.Log("Player Idle State");
+        player.Model.AnimationsController.PlayInstantAnimation(PlayerAnimatorController.IdleHash, 0);
     }
 
     public override void Update()

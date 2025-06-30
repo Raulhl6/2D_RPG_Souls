@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerLocomotion : ILocomotion
@@ -7,14 +8,15 @@ public class PlayerLocomotion : ILocomotion
 
     private PlayerLocomotion() {}
 
-    public static PlayerLocomotion CreatePlayerLocomotion(Rigidbody2D rigidbody)
+    public static PlayerLocomotion CreatePlayerLocomotion(MonoBehaviour context, PlayerData data)
     {
-        PlayerLocomotion playerLocomotion = new PlayerLocomotion()
-        {
-            Rigidbody = rigidbody
-        };
+        if (!context) return null;
         
+        PlayerLocomotion playerLocomotion = new PlayerLocomotion();
         
+        Rigidbody2D rb = context.GetComponent<Rigidbody2D>();
+        playerLocomotion.Rb = rb ? rb : context.AddComponent<Rigidbody2D>();
+        playerLocomotion.MoveSpeed = data.speed;
         
         return playerLocomotion;
     }
@@ -22,7 +24,11 @@ public class PlayerLocomotion : ILocomotion
     #endregion
 
     public Vector2 MoveDirection  => PlayerInputsReader.Instance.MoveDirection;
-    public float MoveSpeed { get; }
-    public Rigidbody2D Rigidbody { get; private set; }
-    
+    public float MoveSpeed { get; private set; }
+    public Rigidbody2D Rb { get; private set; }
+    public bool IsGrounded { get; } = true;
+    public void HandleMovement()
+    {
+        Rb.linearVelocity = MoveDirection * MoveSpeed * Time.fixedDeltaTime;
+    }
 }

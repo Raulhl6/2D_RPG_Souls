@@ -8,7 +8,7 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void OnEnter()
     {
-        Debug.Log("Player Move State");
+        player.Model.AnimationsController.PlayInstantAnimation(PlayerAnimatorController.RunHash, 0);
     }
 
     public override void Update()

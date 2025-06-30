@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public abstract class CharacterHealth : MonoBehaviour, IHealth
+public abstract class CharacterHealthBase : MonoBehaviour, IHealth
 {
     public UnityEvent OnTakeDamage { get; } = new UnityEvent();
     public UnityEvent OnHeal { get; } = new UnityEvent();
