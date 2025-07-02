@@ -10,10 +10,12 @@ public class PlayerModel : IPlayerModel
     {
         PlayerModel playerModel = new PlayerModel
         {
+            InputsReader = PlayerInputsReader.CreatePlayerInputsReader(),
             HealthController = PlayerHealth.CreatePlayerHealth(context, data),
-            LocomotionController = PlayerLocomotion.CreatePlayerLocomotion(context, data),
             AnimationsController = PlayerAnimatorController.CreatePlayerAnimatorController(context)
         };
+        
+        playerModel.LocomotionController = PlayerLocomotion.CreatePlayerLocomotion(context, data, playerModel.InputsReader);
 
         return playerModel;
     }
@@ -23,4 +25,5 @@ public class PlayerModel : IPlayerModel
     public IHealth HealthController { get; set; }
     public ILocomotion LocomotionController { get; set; }
     public PlayerAnimatorController AnimationsController { get; set; }
+    public PlayerInputsReader InputsReader { get; set; }
 }

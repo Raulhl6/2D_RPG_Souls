@@ -50,7 +50,7 @@ public class PlayerStateMachine
     private void At(IState from,  IState to, IPredicate condition) => _stateMachine.AddTransition(from, to, condition);
     private void Any(IState to, IPredicate condition) => _stateMachine.AddAnyTransition(to, condition);
 
-    private bool IsStopped() => PlayerLocomotionController.IsGrounded && PlayerLocomotionController.MoveDirection.x == 0f;
+    private bool IsStopped() => PlayerLocomotionController.IsGrounded && _player.Model.InputsReader.MoveDirection.x == 0f;
 
 
 

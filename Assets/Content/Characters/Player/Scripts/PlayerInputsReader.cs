@@ -1,74 +1,51 @@
-using System;
+
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-public class PlayerInputsReader : MonoBehaviour, PlayerInputActions.IPlayerActions
+public class PlayerInputsReader : PlayerInputActions.IPlayerActions
 {
     
-    #region Singleton
-    public static PlayerInputsReader Instance { get; private set; }
-
-    private void InitSingleton()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    #endregion
-
-
-    #region Unity Methods
-
-    private void Awake()
-    {
-        InitSingleton();
-        InitPlayerInputActions();
-        DontDestroyOnLoad(gameObject);
-    }
-
-    private void OnEnable()
-    {
-        _playerInputActions.Enable();
-    }
-
-    private void OnDisable()
-    {
-        _playerInputActions.Disable();
-    }
-
-    #endregion
-
-
-    #region Input Actions
-
-    private PlayerInputActions _playerInputActions;
-
-    private void InitPlayerInputActions()
-    {
-        _playerInputActions = new PlayerInputActions();
-        _playerInputActions.Player.SetCallbacks(this);
-    }
-
-    #endregion
-
-
-    #region Events
-    
-
+    public event UnityAction<bool> OnMove = delegate { };
     public Vector2 MoveDirection { get; private set; }
     
+    private PlayerInputActions _playerInputActions;
+    
+    private PlayerInputsReader() {}
+
+    public static PlayerInputsReader CreatePlayerInputsReader()
+    {
+        PlayerInputsReader inputsReader = new PlayerInputsReader
+        {
+            _playerInputActions = new PlayerInputActions()
+        };
+
+        inputsReader._playerInputActions.Player.SetCallbacks(inputsReader);
+        
+        return inputsReader;
+    }
+    
+    public void EnableInputs() => _playerInputActions.Enable();
+    public void DisableInputs() => _playerInputActions.Disable();
+
+
     public void OnMovement(InputAction.CallbackContext context)
     {
 
         switch (context.phase)
         {
+            case InputActionPhase.Started:
+                MoveDirection = context.ReadValue<Vector2>();
+                switch (MoveDirection.x)
+                {
+                    case > 0:
+                        OnMove.Invoke(true);
+                        break;
+                    case < 0:
+                        OnMove.Invoke(false);
+                        break;
+                }
+                break;
             case InputActionPhase.Performed:
                 MoveDirection = context.ReadValue<Vector2>();
                 break;
@@ -77,6 +54,5 @@ public class PlayerInputsReader : MonoBehaviour, PlayerInputActions.IPlayerActio
                 break;
         }
     }
-    #endregion
     
 }

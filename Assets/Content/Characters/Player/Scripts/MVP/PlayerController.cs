@@ -14,18 +14,27 @@ public class PlayerController : MonoBehaviour
         _stateMachine = PlayerStateMachine.CreatePlayerStateMachine(this);
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        
+        Model.LocomotionController.EnableMovementEvents();
+        Model.InputsReader.EnableInputs();
+    }
 
+    private void OnDisable()
+    {
+        Model.LocomotionController.DisableMovementEvents();
+        Model.InputsReader.DisableInputs();
     }
 
     private void Update()
     {
         _stateMachine.Update();
-        Model.AnimationsController.UpdateMovementParameters(Model.LocomotionController.MoveDirection);
-        Model.LocomotionController.HandleMovement();
+        Model.AnimationsController.UpdateMovementParameters(Model.InputsReader.MoveDirection);
+        
     }
 
-    
+    private void FixedUpdate()
+    {
+        Model.LocomotionController.HandleMovement();
+    }
 }
