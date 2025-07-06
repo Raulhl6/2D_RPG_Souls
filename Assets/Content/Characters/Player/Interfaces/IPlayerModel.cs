@@ -2,7 +2,7 @@
 public interface IPlayerModel
 {
     IHealth HealthController { get; set; }
-    ILocomotion LocomotionController { get; set; }
+    IPlayerLocomotion LocomotionController { get; set; }
     PlayerAnimatorController AnimationsController { get; set; }
     PlayerInputsReader InputsReader { get; set; }
 }

@@ -23,7 +23,7 @@ public class PlayerModel : IPlayerModel
     #endregion
     
     public IHealth HealthController { get; set; }
-    public ILocomotion LocomotionController { get; set; }
+    public IPlayerLocomotion LocomotionController { get; set; }
     public PlayerAnimatorController AnimationsController { get; set; }
     public PlayerInputsReader InputsReader { get; set; }
 }

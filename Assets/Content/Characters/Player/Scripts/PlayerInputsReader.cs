@@ -5,12 +5,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputsReader : PlayerInputActions.IPlayerActions
 {
-    
-    public event UnityAction<bool> OnMove = delegate { };
-    public Vector2 MoveDirection { get; private set; }
-    
-    private PlayerInputActions _playerInputActions;
-    
+
+    #region Construct
+
     private PlayerInputsReader() {}
 
     public static PlayerInputsReader CreatePlayerInputsReader()
@@ -24,11 +21,23 @@ public class PlayerInputsReader : PlayerInputActions.IPlayerActions
         
         return inputsReader;
     }
+
+    #endregion
+
+    
+    #region Events
+    public event UnityAction<bool> OnMoveEvent = delegate { };
+    public event UnityAction<bool> OnJumpEvent = delegate { };
+
+    #endregion
+    
+
+    #region InputAction
+    private PlayerInputActions _playerInputActions;
+    public Vector2 MoveDirection { get; private set; }
     
     public void EnableInputs() => _playerInputActions.Enable();
     public void DisableInputs() => _playerInputActions.Disable();
-
-
     public void OnMovement(InputAction.CallbackContext context)
     {
 
@@ -39,10 +48,10 @@ public class PlayerInputsReader : PlayerInputActions.IPlayerActions
                 switch (MoveDirection.x)
                 {
                     case > 0:
-                        OnMove.Invoke(true);
+                        OnMoveEvent.Invoke(true);
                         break;
                     case < 0:
-                        OnMove.Invoke(false);
+                        OnMoveEvent.Invoke(false);
                         break;
                 }
                 break;
@@ -54,5 +63,14 @@ public class PlayerInputsReader : PlayerInputActions.IPlayerActions
                 break;
         }
     }
+
+    public void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            OnJumpEvent.Invoke(true);
+        }
+    }
+    #endregion
     
 }

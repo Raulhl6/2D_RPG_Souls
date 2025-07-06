@@ -29,12 +29,12 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         _stateMachine.Update();
-        Model.AnimationsController.UpdateMovementParameters(Model.InputsReader.MoveDirection);
+        Model.AnimationsController.UpdateMovementParameters(Model.LocomotionController.Rb.linearVelocity.y);
         
     }
 
     private void FixedUpdate()
     {
-        Model.LocomotionController.HandleMovement();
+        _stateMachine.FixedUpdate();
     }
 }

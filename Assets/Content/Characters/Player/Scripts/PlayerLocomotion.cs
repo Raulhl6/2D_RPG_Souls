@@ -2,7 +2,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerLocomotion : ILocomotion
+public class PlayerLocomotion : IPlayerLocomotion
 {
 
     #region Constructor
@@ -17,6 +17,7 @@ public class PlayerLocomotion : ILocomotion
         
         Rigidbody2D rb = context.GetComponent<Rigidbody2D>();
         playerLocomotion.Rb = rb ? rb : context.AddComponent<Rigidbody2D>();
+        playerLocomotion.GroundCheck = context.GetComponentInChildren<GroundDetector>();
         playerLocomotion.MoveSpeed = data.speed;
         playerLocomotion._playerTransform = context.transform;
         playerLocomotion._inputsReader = inputsReader;
@@ -28,7 +29,8 @@ public class PlayerLocomotion : ILocomotion
     
     public float MoveSpeed { get; private set; }
     public Rigidbody2D Rb { get; private set; }
-    public bool IsGrounded { get; } = true;
+    public GroundDetector GroundCheck { get; private set; }
+    public bool IsGrounded { get; private set; } = true;
     
     private PlayerInputsReader _inputsReader;
     private Transform _playerTransform;
@@ -44,12 +46,22 @@ public class PlayerLocomotion : ILocomotion
 
     public void EnableMovementEvents()
     {
-        _inputsReader.OnMove += LookSpriteRight;
+        _inputsReader.OnMoveEvent += LookSpriteRight;
+        
     }
 
     public void DisableMovementEvents()
     {
-        _inputsReader.OnMove -= LookSpriteRight;
+        _inputsReader.OnMoveEvent -= LookSpriteRight;
+    }
+
+    public void Jump(bool jumpButtonPressed)
+    {
+        Rb.AddForce(Vector2.up * (jumpButtonPressed ? 1000 : 0));
+        
+        // TODO: DELETE THIS
+        IsGrounded = false;
+        
     }
 
     private void LookSpriteRight(bool isRight)

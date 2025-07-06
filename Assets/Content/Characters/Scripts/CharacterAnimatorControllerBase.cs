@@ -7,13 +7,13 @@ public abstract class CharacterAnimatorControllerBase
 
     protected Animator _animator;
 
-    private static readonly int XVelocity = Animator.StringToHash("xVelocity");
+    //private static readonly int XVelocity = Animator.StringToHash("xVelocity");
     private static readonly int YVelocity = Animator.StringToHash("yVelocity");
 
-    public virtual void UpdateMovementParameters(Vector2 movement)
+    public virtual void UpdateMovementParameters(float yMovement)
     {
-        _animator.SetFloat(XVelocity, movement.x, 0.1f, Time.deltaTime);
-        _animator.SetFloat(YVelocity, movement.y, 0.1f, Time.deltaTime);
+        //_animator.SetFloat(XVelocity, movement.x, 0.1f, Time.deltaTime);
+        _animator.SetFloat(YVelocity, yMovement, 0.1f, Time.deltaTime);
     }
 
     public void PlayInstantAnimation(int hash, int layer)
